@@ -5,6 +5,8 @@ import { connectDB } from './db.js';
 import { verifyToken } from './middleware/auth.js';
 import menuItemRoutes from './routes/menuItems.js';
 import orderRoutes from './routes/orders.js';
+import adminRoutes from './routes/admin.js';
+
 
 const app = express();
 
@@ -30,6 +32,8 @@ app.get('/api/me', verifyToken, (req, res) => {
   res.json({ user: req.user });
 });
 app.use('/api/menu-items', menuItemRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/admin', adminRoutes);
 
 // 404 for unknown routes
 app.use((req, res) => {
