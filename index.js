@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { connectDB } from './db.js';
 import { verifyToken } from './middleware/auth.js';
+import menuItemRoutes from './routes/menuItems.js';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get('/api/health', (req, res) => {
 app.get('/api/me', verifyToken, (req, res) => {
   res.json({ user: req.user });
 });
+app.use('/api/menu-items', menuItemRoutes);
 
 // 404 for unknown routes
 app.use((req, res) => {
