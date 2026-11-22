@@ -6,7 +6,7 @@ import { verifyToken } from './middleware/auth.js';
 import menuItemRoutes from './routes/menuItems.js';
 import orderRoutes from './routes/orders.js';
 import adminRoutes from './routes/admin.js';
-
+import paymentRoutes, { webhookHandler } from './routes/payments.js';
 
 const app = express();
 
@@ -17,9 +17,11 @@ app.use(
   })
 );
 
-// NOTE: the Stripe webhook route will need the raw body,
-// so we'll register it BEFORE this line later.
+// Stripe webhook: must come BEFORE express.json() because it needs the raw body
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), webhookHandler);
+
 app.use(express.json());
+
 app.use(async (req, res, next) => {
   try {
     await connectDB();
@@ -36,12 +38,15 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
 app.get('/api/me', verifyToken, (req, res) => {
   res.json({ user: req.user });
 });
+
 app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 404 for unknown routes
 app.use((req, res) => {
