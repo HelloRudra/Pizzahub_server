@@ -4,6 +4,7 @@ import cors from 'cors';
 import { connectDB } from './db.js';
 import { verifyToken } from './middleware/auth.js';
 import menuItemRoutes from './routes/menuItems.js';
+import orderRoutes from './routes/orders.js';
 
 const app = express();
 
