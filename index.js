@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { connectDB } from './db.js';
+import { verifyToken } from './middleware/auth.js';
 
 const app = express();
 
@@ -22,6 +23,9 @@ app.get('/', (req, res) => {
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+app.get('/api/me', verifyToken, (req, res) => {
+  res.json({ user: req.user });
 });
 
 // 404 for unknown routes
