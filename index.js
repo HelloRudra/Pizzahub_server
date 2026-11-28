@@ -7,6 +7,8 @@ import menuItemRoutes from './routes/menuItems.js';
 import orderRoutes from './routes/orders.js';
 import adminRoutes from './routes/admin.js';
 import paymentRoutes, { webhookHandler } from './routes/payments.js';
+import favoriteRoutes from './routes/favorites.js';
+
 
 const app = express();
 
@@ -47,6 +49,7 @@ app.use('/api/menu-items', menuItemRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 // 404 for unknown routes
 app.use((req, res) => {
